@@ -1,0 +1,80 @@
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints.
+#
+# The issues identified by the analyzer are surfaced in the UI of Dart-enabled
+# IDEs (https://dart.dev/tools#ides-and-editors). The analyzer can also be
+# invoked from the command line by running `flutter analyze`.
+
+# The following line activates a set of recommended lints for Flutter apps,
+# packages, and plugins designed to encourage good coding practices.
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-inference: true
+    strict-raw-types: true
+  plugins:
+    - dart_code_metrics
+  exclude:
+    - "lib/objectbox.g.dart"
+    - "lib/hitshot_icons.dart"
+    - "lib/**.g.dart"
+
+dart_code_metrics:
+  rules:
+    - no-empty-block
+    - newline-before-return:
+        severity: error
+    - prefer-trailing-comma:
+        severity: error
+    - no-boolean-literal-compare:
+        severity: error
+    - no-equal-then-else:
+        severity: error
+    - avoid-unnecessary-conditionals:
+        severity: error
+    - avoid-cascade-after-if-null:
+        severity: error
+    - avoid-redundant-async:
+        severity: error
+
+linter:
+  # The lint rules applied to this project can be customized in the
+  # section below to disable rules from the `package:flutter_lints/flutter.yaml`
+  # included above or to enable additional rules. A list of all available lints
+  # and their documentation is published at
+  # https://dart-lang.github.io/linter/lints/index.html.
+  #
+  # Instead of disabling a lint rule for the entire project in the
+  # section below, it can also be suppressed for a single line of code
+  # or a specific dart file by using the `// ignore: name_of_lint` and
+  # `// ignore_for_file: name_of_lint` syntax on the line or in the file
+  # producing the lint.
+  rules:
+    prefer_single_quotes: true
+    unnecessary_statements: true
+    always_declare_return_types: true
+    # always_put_control_body_on_new_line: true
+    avoid_final_parameters: true
+    avoid_multiple_declarations_per_line: true
+    # avoid_positional_boolean_parameters: true
+    avoid_redundant_argument_values: true
+    avoid_unused_constructor_parameters: true
+    directives_ordering: true
+    flutter_style_todos: true
+    # lines_longer_than_80_chars: true
+    parameter_assignments: true
+    sized_box_shrink_expand: true
+    unnecessary_await_in_return: true
+    prefer_final_locals: true
+    unnecessary_final: false
+    # unnecessary_lambdas: true
+    unnecessary_late: true
+    unnecessary_parenthesis: true
+    use_decorated_box: true
+    use_super_parameters: true
+    sort_child_properties_last: true
+    always_use_package_imports: true
+    sort_constructors_first: true
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options
