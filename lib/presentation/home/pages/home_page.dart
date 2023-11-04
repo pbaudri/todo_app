@@ -49,58 +49,67 @@ class _MyHomePageState extends State<MyHomePage>
     ),
   ];
 
+  final _pageController = PageController(viewportFraction: .85);
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorConstants.lightOrange,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const HomeAppBarWidget(),
-            const SizedBox(height: 60.0),
-            const HomePageUserWelcomeWidget(),
-            const SizedBox(height: 12.0),
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) => SizedBox(
-                  height: constraints.maxHeight,
-                  width: constraints.maxWidth,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.symmetric(horizontal: 52),
-                    itemCount: taskGroups.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      final taskGroup = taskGroups.elementAt(index);
+      body: AnimatedContainer(
+        duration: kThemeAnimationDuration,
+        color: taskGroups.elementAt(_currentIndex).color,
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const HomeAppBarWidget(),
+              const SizedBox(height: 60.0),
+              const HomePageUserWelcomeWidget(),
+              const SizedBox(height: 12.0),
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) => SizedBox(
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    child: PageView.builder(
+                      onPageChanged: (value) => setState(() {
+                        _currentIndex = value;
+                      }),
+                      itemCount: taskGroups.length,
+                      controller: _pageController,
+                      itemBuilder: (context, index) {
+                        final taskGroup = taskGroups.elementAt(index);
 
-                      return OpenContainer(
-                        closedColor: Colors.transparent,
-                        openColor: Colors.transparent,
-                        closedElevation: 0,
-                        openElevation: 0,
-                        openShape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        closedBuilder: (context, action) => GestureDetector(
-                          onTap: action,
-                          child: CardGroupTaskWidget(
-                            taskGroup: taskGroup,
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: OpenContainer(
+                            closedColor: Colors.transparent,
+                            openColor: Colors.transparent,
+                            closedElevation: 0,
+                            openElevation: 0,
+                            openShape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            closedBuilder: (context, action) => GestureDetector(
+                              onTap: action,
+                              child: CardGroupTaskWidget(
+                                taskGroup: taskGroup,
+                              ),
+                            ),
+                            openBuilder: (context, action) => GroupTaskPage(
+                              taskGroup: taskGroup,
+                            ),
+                            transitionDuration: const Duration(seconds: 1),
                           ),
-                        ),
-                        openBuilder: (context, action) => GroupTaskPage(
-                          taskGroup: taskGroup,
-                        ),
-                        transitionDuration: const Duration(seconds: 1),
-                      );
-                    },
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(width: 20.0),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 40),
-          ],
+              const SizedBox(height: 40),
+            ],
+          ),
         ),
       ),
     );

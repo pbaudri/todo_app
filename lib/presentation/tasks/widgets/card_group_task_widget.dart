@@ -28,86 +28,83 @@ class CardGroupTaskWidget extends StatelessWidget {
       color: Colors.white,
       child: Padding(
         padding: EdgeInsets.all(isFullScreen ? 0 : 20.0),
-        child: SizedBox(
-          width: 300,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: isFullScreen
-                ? MainAxisAlignment.start
-                : MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: ColorConstants.lightGrey,
-                      ),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Icon(
-                        taskGroup.icon,
-                        size: 32.0,
-                        color: taskGroup.color,
-                      ),
-                    ),
-                  ),
-                  if (!isFullScreen)
-                    const Icon(
-                      Icons.more_vert_outlined,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: isFullScreen
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    border: Border.all(
                       color: ColorConstants.lightGrey,
                     ),
-                ],
-              ),
-              if (isFullScreen) const SizedBox(height: 20.0),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${taskGroup.tasks.length} Tasks',
-                    style: TextStyle(
-                      color: ColorConstants.darkGrey.withOpacity(.6),
-                      fontSize: 20.0,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Icon(
+                      taskGroup.icon,
+                      size: 32.0,
+                      color: taskGroup.color,
                     ),
                   ),
-                  const SizedBox(height: 8.0),
-                  Text(
-                    taskGroup.name,
-                    style: TextStyle(
-                      color: ColorConstants.darkGrey.withOpacity(.9),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 36.0,
+                ),
+                if (!isFullScreen)
+                  const Icon(
+                    Icons.more_vert_outlined,
+                    color: ColorConstants.lightGrey,
+                  ),
+              ],
+            ),
+            if (isFullScreen) const SizedBox(height: 20.0),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${taskGroup.tasks.length} Tasks',
+                  style: TextStyle(
+                    color: ColorConstants.darkGrey.withOpacity(.6),
+                    fontSize: 20.0,
+                  ),
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  taskGroup.name,
+                  style: TextStyle(
+                    color: ColorConstants.darkGrey.withOpacity(.9),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 36.0,
+                  ),
+                ),
+                const SizedBox(height: 20.0),
+                Row(
+                  children: [
+                    Expanded(
+                      child: LinearProgressIndicator(
+                        value: percentageDone,
+                        backgroundColor: ColorConstants.lightGrey,
+                        valueColor: AlwaysStoppedAnimation(
+                          taskGroup.color,
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: LinearProgressIndicator(
-                          value: percentageDone,
-                          backgroundColor: ColorConstants.lightGrey,
-                          valueColor: AlwaysStoppedAnimation(
-                            taskGroup.color,
-                          ),
-                        ),
+                    const SizedBox(width: 8.0),
+                    Text(
+                      '${(percentageDone * 100).toStringAsFixed(0)}%',
+                      style: TextStyle(
+                        color: ColorConstants.darkGrey.withOpacity(.6),
+                        fontSize: 12.0,
                       ),
-                      const SizedBox(width: 8.0),
-                      Text(
-                        '${(percentageDone * 100).toStringAsFixed(0)}%',
-                        style: TextStyle(
-                          color: ColorConstants.darkGrey.withOpacity(.6),
-                          fontSize: 12.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
