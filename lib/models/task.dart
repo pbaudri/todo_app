@@ -2,8 +2,14 @@ class Task {
   Task({
     required this.name,
     this.isDone = false,
+    required this.date,
   });
 
-  final String name;
-  final bool isDone;
+  String name;
+  bool isDone;
+  DateTime date;
+
+  set setDoneValue(bool newIsDone) {
+    isDone = newIsDone;
+  }
 }

@@ -17,35 +17,60 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-  final taskGroups = [
+  final tasks = [
+    Task(
+      name: 'Meet Clients',
+      date: DateTime.now(),
+    ),
+    Task(
+      name: 'Design Sprints',
+      isDone: true,
+      date: DateTime.now(),
+    ),
+    Task(
+      name: 'Icon Set Design for Mobile App',
+      isDone: true,
+      date: DateTime.now(),
+    ),
+    Task(
+      name: 'HTML/CSS tudy',
+      date: DateTime.now(),
+    ),
+    Task(
+      name: 'Weekly Report',
+      date: DateTime.now().add(const Duration(days: -1)),
+    ),
+    Task(
+      name: 'Design Meeting',
+      date: DateTime.now().add(const Duration(days: -1)),
+    ),
+    Task(
+      name: 'Quick Prototyping',
+      date: DateTime.now().add(const Duration(days: -1)),
+    ),
+    Task(
+      name: 'UX Conference',
+      date: DateTime.now().add(const Duration(days: -7)),
+    ),
+  ];
+  late final taskGroups = [
     TaskGroup(
       color: ColorConstants.lightOrange,
       icon: Icons.person,
       name: 'Personal',
-      tasks: [
-        Task(name: 'Meet Clients'),
-        Task(
-          name: 'Design Sprints',
-          isDone: true,
-        ),
-        Task(
-          name: 'Icon Set Design for Mobile App',
-          isDone: true,
-        ),
-        Task(name: 'HTML/CSS tudy'),
-      ],
+      tasks: tasks.take(7).toList(),
     ),
     TaskGroup(
       color: Colors.blue,
       icon: Icons.work,
       name: 'Work',
-      tasks: [],
+      tasks: tasks,
     ),
     TaskGroup(
       color: Colors.green,
       icon: Icons.home_rounded,
       name: 'Home',
-      tasks: [],
+      tasks: tasks.take(4).toList(),
     ),
   ];
 

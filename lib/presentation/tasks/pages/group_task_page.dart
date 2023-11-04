@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_app/models/task_group.dart';
 import 'package:todo_app/presentation/tasks/widgets/card_group_task_widget.dart';
 import 'package:todo_app/utils/colors/colors.dart';
 
-class GroupTaskPage extends StatelessWidget {
+class GroupTaskPage extends StatefulWidget {
   const GroupTaskPage({
     super.key,
     required this.taskGroup,
@@ -11,7 +12,16 @@ class GroupTaskPage extends StatelessWidget {
   final TaskGroup taskGroup;
 
   @override
+  State<GroupTaskPage> createState() => _GroupTaskPageState();
+}
+
+class _GroupTaskPageState extends State<GroupTaskPage> {
+  @override
   Widget build(BuildContext context) {
+    final tasks = widget.taskGroup.tasks;
+    DateTime? currentDate;
+    DateTime? oldTaskDate;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -45,27 +55,32 @@ class GroupTaskPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CardGroupTaskWidget(
-                      taskGroup: taskGroup,
+                      taskGroup: widget.taskGroup,
                       isFullScreen: true,
                     ),
                     const SizedBox(height: 24.0),
-                    Text(
-                      'Today',
-                      style: TextStyle(
-                        color: ColorConstants.darkGrey.withOpacity(.5),
-                        fontSize: 14.0,
-                      ),
-                    ),
-                    const SizedBox(height: 12.0),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: taskGroup.tasks.length,
+                        itemCount: tasks.length,
                         itemBuilder: (context, index) {
-                          final task = taskGroup.tasks.elementAt(index);
+                          oldTaskDate = currentDate;
+                          final task = tasks.elementAt(index);
+                          currentDate = task.date;
 
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              if (oldTaskDate?.day != currentDate?.day) ...[
+                                Text(
+                                  DateFormat('EEEE').format(currentDate!),
+                                  style: TextStyle(
+                                    color:
+                                        ColorConstants.darkGrey.withOpacity(.5),
+                                    fontSize: 14.0,
+                                  ),
+                                ),
+                                const SizedBox(height: 12.0),
+                              ],
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 16.0,
@@ -74,7 +89,11 @@ class GroupTaskPage extends StatelessWidget {
                                   children: [
                                     Checkbox(
                                       value: task.isDone,
-                                      onChanged: (value) {},
+                                      onChanged: (value) {
+                                        setState(() {
+                                          task.isDone = !task.isDone;
+                                        });
+                                      },
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(4),
                                       ),
@@ -84,18 +103,21 @@ class GroupTaskPage extends StatelessWidget {
                                           if (states.contains(
                                             MaterialState.disabled,
                                           )) {
-                                            return taskGroup.color
+                                            return widget.taskGroup.color
                                                 .withOpacity(.32);
                                           }
 
-                                          return taskGroup.color;
+                                          return widget.taskGroup.color;
                                         },
                                       ),
                                     ),
                                     Text(
                                       task.name,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.w400,
+                                        decoration: task.isDone
+                                            ? TextDecoration.lineThrough
+                                            : null,
                                       ),
                                     ),
                                   ],

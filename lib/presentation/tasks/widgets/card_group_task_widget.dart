@@ -22,6 +22,7 @@ class CardGroupTaskWidget extends StatelessWidget {
                 )
                 .length /
             taskGroup.tasks.length;
+    double oldValue = percentageDone;
 
     return Material(
       borderRadius: BorderRadius.circular(20.0),
@@ -84,11 +85,19 @@ class CardGroupTaskWidget extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: LinearProgressIndicator(
-                        value: percentageDone,
-                        backgroundColor: ColorConstants.lightGrey,
-                        valueColor: AlwaysStoppedAnimation(
-                          taskGroup.color,
+                      child: TweenAnimationBuilder<double>(
+                        duration: kThemeAnimationDuration,
+                        curve: Curves.easeInOut,
+                        tween: Tween<double>(
+                          begin: oldValue,
+                          end: percentageDone,
+                        ),
+                        builder: (context, value, _) => LinearProgressIndicator(
+                          value: value,
+                          backgroundColor: ColorConstants.lightGrey,
+                          valueColor: AlwaysStoppedAnimation(
+                            taskGroup.color,
+                          ),
                         ),
                       ),
                     ),
