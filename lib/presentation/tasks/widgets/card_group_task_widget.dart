@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/models/task_group.dart';
 import 'package:todo_app/utils/colors/colors.dart';
 
-class CardGroupTask extends StatelessWidget {
-  const CardGroupTask({
+class CardGroupTaskWidget extends StatelessWidget {
+  const CardGroupTaskWidget({
     super.key,
     required this.taskGroup,
     this.isFullScreen = false,

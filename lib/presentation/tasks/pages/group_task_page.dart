@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/card_group_task.dart';
 import 'package:todo_app/models/task_group.dart';
+import 'package:todo_app/presentation/tasks/widgets/card_group_task_widget.dart';
 import 'package:todo_app/utils/colors/colors.dart';
 
-class GroupTaskView extends StatelessWidget {
-  const GroupTaskView({
+class GroupTaskPage extends StatelessWidget {
+  const GroupTaskPage({
     super.key,
     required this.taskGroup,
   });
@@ -44,7 +44,7 @@ class GroupTaskView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CardGroupTask(
+                    CardGroupTaskWidget(
                       taskGroup: taskGroup,
                       isFullScreen: true,
                     ),
