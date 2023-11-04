@@ -1,23 +1,10 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/card_group_task.dart';
+import 'package:todo_app/group_task_view.dart';
+import 'package:todo_app/models/task.dart';
+import 'package:todo_app/models/task_group.dart';
 import 'package:todo_app/utils/colors/colors.dart';
-
-class TaskGroup {
-  TaskGroup({
-    required this.color,
-    required this.icon,
-    required this.name,
-    required this.tasks,
-    required this.percentageDone,
-  });
-
-  final Color color;
-  final IconData icon;
-  final String name;
-  final List<Task> tasks;
-  final int percentageDone;
-}
-
-class Task {}
 
 void main() {
   runApp(const MyApp());
@@ -44,55 +31,40 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   final taskGroups = [
     TaskGroup(
       color: ColorConstants.lightOrange,
       icon: Icons.person,
       name: 'Personal',
       tasks: [
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task(),
+        Task(name: 'Meet Clients'),
+        Task(
+          name: 'Design Sprints',
+          isDone: true,
+        ),
+        Task(
+          name: 'Icon Set Design for Mobile App',
+          isDone: true,
+        ),
+        Task(name: 'HTML/CSS tudy'),
       ],
-      percentageDone: 83,
     ),
     TaskGroup(
       color: Colors.blue,
       icon: Icons.work,
       name: 'Work',
-      tasks: [
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-      ],
-      percentageDone: 24,
+      tasks: [],
     ),
     TaskGroup(
       color: Colors.green,
       icon: Icons.home_rounded,
       name: 'Home',
-      tasks: [
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-        Task(),
-      ],
-      percentageDone: 32,
+      tasks: [],
     ),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,102 +143,30 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: constraints.maxHeight,
                   width: constraints.maxWidth,
                   child: ListView.separated(
-                    padding: const EdgeInsets.only(left: 52),
+                    padding: const EdgeInsets.symmetric(horizontal: 52),
                     itemCount: taskGroups.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       final taskGroup = taskGroups.elementAt(index);
 
-                      return DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12.0),
-                          color: ColorConstants.white,
+                      return OpenContainer(
+                        closedColor: Colors.transparent,
+                        openColor: Colors.transparent,
+                        closedElevation: 0,
+                        openElevation: 0,
+                        openShape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: SizedBox(
-                            width: 300,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    DecoratedBox(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: ColorConstants.lightGrey,
-                                        ),
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(12.0),
-                                        child: Icon(
-                                          taskGroup.icon,
-                                          size: 32.0,
-                                          color: taskGroup.color,
-                                        ),
-                                      ),
-                                    ),
-                                    const Icon(
-                                      Icons.more_vert_outlined,
-                                      color: ColorConstants.lightGrey,
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '${taskGroup.tasks.length} Tasks',
-                                      style: TextStyle(
-                                        color: ColorConstants.darkGrey
-                                            .withOpacity(.6),
-                                        fontSize: 20.0,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8.0),
-                                    Text(
-                                      taskGroup.name,
-                                      style: TextStyle(
-                                        color: ColorConstants.darkGrey
-                                            .withOpacity(.9),
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 36.0,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20.0),
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          child: LinearProgressIndicator(
-                                            value: .83,
-                                            backgroundColor:
-                                                ColorConstants.lightGrey,
-                                            valueColor: AlwaysStoppedAnimation(
-                                              taskGroup.color,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 8.0),
-                                        Text(
-                                          '${taskGroup.percentageDone}%',
-                                          style: TextStyle(
-                                            color: ColorConstants.darkGrey
-                                                .withOpacity(.6),
-                                            fontSize: 12.0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                        closedBuilder: (context, action) => InkWell(
+                          onTap: action,
+                          child: CardGroupTask(
+                            taskGroup: taskGroup,
                           ),
                         ),
+                        openBuilder: (context, action) => GroupTaskView(
+                          taskGroup: taskGroup,
+                        ),
+                        transitionDuration: const Duration(seconds: 1),
                       );
                     },
                     separatorBuilder: (context, index) =>
